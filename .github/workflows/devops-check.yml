@@ -1,0 +1,15 @@
+name: Script Health Check
+
+on: [push] # Trigger this every time you push code
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run my DevOps script
+        run: |
+          chmod +x status_check.sh
+          ./status_check.sh
