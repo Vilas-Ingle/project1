@@ -1,18 +1,31 @@
-name: Script Health Check
+name: CI to Docker Hub
 
-on: [push] # Trigger this every time you push code
+on:
+  push:
+    branches: [ "main" ] # Only runs when you push to the main branch
 
 jobs:
-  health-check:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Run my DevOps script
+      - name: Run Health Check
         run: |
           chmod +x status_check.sh
           ./status_check.sh
-          
-      - name: Build Docker Image
-        run: docker build -t my-first-docker-image .
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push to Docker Hub
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          # Replace 'your-repo-name' with your actual Docker Hub repo name
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/your-repo-name:my-devops-apps
