@@ -28,4 +28,4 @@ jobs:
           context: .
           push: true
           # Replace 'your-repo-name' with your actual Docker Hub repo name
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/your-repo-name:my-devops-apps
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/my-devops-apps:latest
